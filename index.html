@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#080810">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>tap in.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ATMOSPHERE OVERLAYS -->
+<div class="grain">
+  <svg width="100%" height="100%">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noise)"/>
+  </svg>
+</div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+
+<!-- TOP BAR -->
+<div class="topbar" id="topbar">
+  <span class="topbar-wordmark">tap in.</span>
+  <button class="topbar-gear" id="btn-settings" aria-label="Settings">&#9881;</button>
+</div>
+
+<!-- NAV BAR -->
+<nav class="navbar" id="navbar">
+  <button class="nav-item active" data-screen="map">
+    <span class="nav-icon">&#x1F5FA;</span>
+    <span>map</span>
+  </button>
+  <button class="nav-item" data-screen="inbox">
+    <span class="nav-icon">&#x1F4EC;</span>
+    <span>drinks</span>
+  </button>
+  <button class="nav-item" data-screen="chat">
+    <span class="nav-icon">&#x1F4AC;</span>
+    <span>chat</span>
+  </button>
+  <button class="nav-item" data-screen="points">
+    <span class="nav-icon">&#x2B50;</span>
+    <span>points</span>
+  </button>
+</nav>
+
+<div class="app-shell">
+
+  <!-- 1. LANDING -->
+  <div class="screen active" id="landing">
+    <h1 class="landing-wordmark">tap in.</h1>
+    <p class="landing-subtitle">members only. nyc.</p>
+    <div class="landing-form">
+      <input class="input-field" id="invite-code" type="text" placeholder="enter invite code" autocomplete="off">
+      <button class="btn-primary full-width" id="btn-enter">enter</button>
+    </div>
+    <button class="landing-apply" id="btn-apply-link">apply for access &rarr;</button>
+  </div>
+
+  <!-- 2. APPLY -->
+  <div class="screen" id="apply">
+    <span class="apply-progress" id="apply-progress">1/5</span>
+    <p class="apply-question" id="apply-question"></p>
+    <div class="apply-input-wrap">
+      <input class="input-field" id="apply-input" type="text" placeholder="" autocomplete="off">
+      <button class="btn-primary" id="btn-apply-next">next</button>
+    </div>
+  </div>
+
+  <!-- PENDING -->
+  <div class="screen" id="pending">
+    <p class="pending-title">you're on the list.</p>
+    <p class="pending-sub">we'll reach out.</p>
+  </div>
+
+  <!-- 3. VIBES -->
+  <div class="screen" id="vibes">
+    <h2 class="vibes-title">pick your vibe tonight.</h2>
+    <div class="vibes-grid" id="vibes-grid"></div>
+    <p class="vibes-counter">pick <span id="vibes-count">3</span></p>
+    <button class="btn-primary" id="btn-vibes-continue" disabled>continue</button>
+  </div>
+
+  <!-- 4. MAP -->
+  <div class="screen has-nav has-topbar" id="map">
+    <div class="map-area">
+      <div class="street-grid"></div>
+      <div class="map-fog"></div>
+      <div class="venue-badge">
+        <span class="venue-dot"></span>
+        <span class="venue-name">Elsewhere &middot; BK</span>
+        <span class="venue-count">31 here tonight</span>
+      </div>
+      <div id="map-dots"></div>
+    </div>
+    <div class="map-sheet">
+      <div class="map-sheet-handle"></div>
+      <div class="map-sheet-title">tap in.</div>
+      <div class="map-sheet-vibes" id="map-vibes"></div>
+      <div class="map-sheet-status">you're live</div>
+    </div>
+  </div>
+
+  <!-- 7. DRINK INBOX -->
+  <div class="screen has-nav has-topbar" id="inbox">
+    <h2 class="inbox-header">drinks.</h2>
+    <div id="inbox-content">
+      <div class="inbox-card" id="inbox-demo-card">
+        <div class="inbox-card-title">someone sent you an old fashioned</div>
+        <div class="inbox-card-venue">at Elsewhere &middot; 8 min ago</div>
+        <div class="inbox-card-timer" id="inbox-timer">28:00</div>
+        <div class="inbox-card-actions">
+          <button class="btn-primary" id="btn-accept-drink">accept</button>
+          <button class="btn-ghost" id="btn-decline-drink">decline</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. CHAT -->
+  <div class="screen has-nav has-topbar" id="chat">
+    <div class="chat-header">anonymous &middot; elsewhere</div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-bubble them">you have good taste.</div>
+      <div class="chat-bubble you">the drink or the choice?</div>
+      <div class="chat-bubble them">both.</div>
+    </div>
+    <div class="chat-input-row">
+      <input class="input-field" id="chat-input" type="text" placeholder="say something..." autocomplete="off">
+      <button class="chat-send" id="btn-chat-send">send</button>
+    </div>
+  </div>
+
+  <!-- 9. REVERB -->
+  <div class="screen has-nav has-topbar" id="reverb">
+    <h2 class="reverb-header">last night.</h2>
+    <p class="reverb-sub">you were both at elsewhere. you didn't talk.</p>
+    <div class="reverb-cards">
+      <div class="reverb-card">
+        <div class="reverb-card-time">11:42 pm &mdash; 12:15 am</div>
+        <span class="reverb-card-vibe">here for the music</span>
+        <button class="reverb-card-btn" data-reverb="1">10 pts to reverb &rarr;</button>
+      </div>
+      <div class="reverb-card">
+        <div class="reverb-card-time">12:30 am &mdash; 1:05 am</div>
+        <span class="reverb-card-vibe">making rounds</span>
+        <button class="reverb-card-btn" data-reverb="2">10 pts to reverb &rarr;</button>
+      </div>
+      <div class="reverb-card">
+        <div class="reverb-card-time">1:15 am &mdash; 1:48 am</div>
+        <span class="reverb-card-vibe">down for whatever</span>
+        <button class="reverb-card-btn" data-reverb="3">10 pts to reverb &rarr;</button>
+      </div>
+    </div>
+    <div class="reverb-balance" id="reverb-balance">points balance: 340</div>
+  </div>
+
+  <!-- 10. POINTS -->
+  <div class="screen has-nav has-topbar" id="points">
+    <h2 class="points-header">your balance.</h2>
+    <div class="points-big" id="points-total">340</div>
+    <div class="points-label">tap in points</div>
+    <div class="points-section">
+      <div class="points-section-title">earned</div>
+      <div class="points-list">
+        <div class="points-row"><span class="points-row-icon">&#x2714;</span><span class="points-row-desc">checked into elsewhere</span><span class="points-row-delta">+10</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x1F91D;</span><span class="points-row-desc">invite approved</span><span class="points-row-delta">+50</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x2728;</span><span class="points-row-desc">matched with someone</span><span class="points-row-delta">+5</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x1F378;</span><span class="points-row-desc">drink accepted</span><span class="points-row-delta">+15</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x1F3B5;</span><span class="points-row-desc">vibed at event</span><span class="points-row-delta">+10</span></div>
+      </div>
+    </div>
+    <div class="points-section">
+      <div class="points-section-title">spent</div>
+      <div class="points-list">
+        <div class="points-row"><span class="points-row-icon">&#x1F50A;</span><span class="points-row-desc">sent reverb</span><span class="points-row-delta negative">-10</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x26A1;</span><span class="points-row-desc">priority tap</span><span class="points-row-delta negative">-20</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x1F378;</span><span class="points-row-desc">sent old fashioned</span><span class="points-row-delta negative">-160</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x1F50A;</span><span class="points-row-desc">sent reverb</span><span class="points-row-delta negative">-10</span></div>
+        <div class="points-row"><span class="points-row-icon">&#x2B50;</span><span class="points-row-desc">boosted profile</span><span class="points-row-delta negative">-30</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="screen has-topbar" id="settings">
+    <div class="settings-header">
+      <button class="settings-back" id="btn-settings-back">&larr;</button>
+      <h2 class="settings-title">settings.</h2>
+    </div>
+    <div class="settings-section">
+      <div class="toggle-row">
+        <span class="toggle-label">anonymous mode</span>
+        <div class="toggle on" data-toggle="anon"></div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">location precision</span>
+        <select class="settings-select" id="location-precision">
+          <option value="exact">exact</option>
+          <option value="fuzzy" selected>fuzzy</option>
+          <option value="off">off</option>
+        </select>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">notifications</span>
+        <div class="toggle on" data-toggle="notif"></div>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">block list</span>
+        <span class="settings-empty">clean slate.</span>
+      </div>
+    </div>
+    <button class="settings-delete" id="btn-delete-account">delete account</button>
+  </div>
+
+</div><!-- /.app-shell -->
+
+<!-- 5. PROFILE PEEK OVERLAY -->
+<div class="peek-overlay" id="peek-overlay">
+  <div class="peek-sheet">
+    <div class="peek-avatar" id="peek-avatar">M</div>
+    <div class="peek-name-row">
+      <span class="peek-name" id="peek-name">Maya</span>
+      <span class="peek-age" id="peek-age">26</span>
+    </div>
+    <div class="peek-vibes" id="peek-vibes"></div>
+    <div class="peek-venue" id="peek-venue">at Elsewhere &middot; 23 min</div>
+    <div class="peek-tap-confirm" id="peek-tap-confirm"></div>
+    <div class="peek-actions">
+      <button class="btn-primary" id="btn-tap">&#x26A1; tap</button>
+      <button class="btn-outline" id="btn-send-drink">&#x1F378; send a drink</button>
+      <button class="btn-ghost" id="btn-peek-close">&#x2715;</button>
+    </div>
+  </div>
+</div>
+
+<!-- 6. DRINK MODAL OVERLAY -->
+<div class="drink-overlay" id="drink-overlay">
+  <div class="drink-modal">
+    <div>
+      <div class="drink-header-title">send a drink</div>
+      <div class="drink-header-venue">at Elsewhere</div>
+    </div>
+    <div class="drink-menu" id="drink-menu">
+      <div class="drink-card" data-drink="old-fashioned" data-price="16" data-pts="160">
+        <span class="drink-card-name">Old Fashioned</span>
+        <span class="drink-card-meta">$16 &middot; 160 pts</span>
+      </div>
+      <div class="drink-card" data-drink="house-lager" data-price="9" data-pts="90">
+        <span class="drink-card-name">House Lager</span>
+        <span class="drink-card-meta">$9 &middot; 90 pts</span>
+      </div>
+      <div class="drink-card" data-drink="mezcal-shot" data-price="12" data-pts="120">
+        <span class="drink-card-name">Mezcal Shot</span>
+        <span class="drink-card-meta">$12 &middot; 120 pts</span>
+      </div>
+      <div class="drink-card" data-drink="sparkling-water" data-price="5" data-pts="50">
+        <span class="drink-card-name">Sparkling Water</span>
+        <span class="drink-card-meta">$5 &middot; 50 pts</span>
+      </div>
+    </div>
+    <div class="drink-msg-wrap">
+      <textarea class="input-field" id="drink-message" placeholder="say something. or don't." maxlength="140"></textarea>
+      <span class="drink-msg-counter" id="drink-msg-counter">140</span>
+    </div>
+    <div class="drink-toggle-row">
+      <span class="drink-toggle-label">send anonymously</span>
+      <div class="toggle" data-toggle="drink-anon"></div>
+    </div>
+    <div class="drink-payment">
+      <button class="drink-pay-btn selected" data-pay="card">&#x1F4B3; card</button>
+      <button class="drink-pay-btn" data-pay="points">&#x2B50; points (340)</button>
+    </div>
+    <button class="btn-primary full-width" id="btn-send-drink-confirm">send the drink &rarr;</button>
+    <button class="btn-ghost" id="btn-drink-cancel" style="text-align:center;">cancel</button>
+  </div>
+</div>
+
+<!-- DRINK SUCCESS -->
+<div class="drink-success" id="drink-success">
+  <span class="drink-success-text">drink sent.</span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
