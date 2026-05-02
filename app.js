@@ -407,6 +407,30 @@
 
   window.addEventListener('hashchange', handleHash);
 
+  // ---- Theme ----
+  function applyTheme(t) {
+    const themes = ['amber', 'velvet', 'noir'];
+    const root = document.documentElement;
+    // Remove theme attr for amber (default), set for others
+    if (t === 'amber') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', t);
+    // Update swatch active state
+    document.querySelectorAll('.theme-swatch').forEach(s => {
+      s.classList.toggle('active', s.dataset.t === t);
+    });
+    // Update meta theme-color
+    const colors = { amber: '#080810', velvet: '#07050C', noir: '#050505' };
+    document.querySelector('meta[name="theme-color"]').content = colors[t] || '#080810';
+    localStorage.setItem('tapin-theme', t);
+  }
+
+  document.querySelectorAll('.theme-swatch').forEach(s => {
+    s.addEventListener('click', () => applyTheme(s.dataset.t));
+  });
+
+  // Restore saved theme
+  applyTheme(localStorage.getItem('tapin-theme') || 'amber');
+
   // ---- Init ----
   buildVibesGrid();
   startInboxTimer();

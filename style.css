@@ -4,16 +4,51 @@
   --surface: #111120;
   --surface2: #1A1A2E;
   --accent: #C17B3A;
+  --accent2: #C17B3A;
   --accent-glow: rgba(193,123,58,0.15);
   --text: #E8E4DC;
   --text-muted: rgba(232,228,220,0.45);
   --text-ghost: rgba(232,228,220,0.15);
   --border: rgba(193,123,58,0.18);
+  --grid-color: rgba(193,123,58,0.04);
+  --fog-color: rgba(193,123,58,0.06);
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'JetBrains Mono', monospace;
   --radius: 0px;
   --radius-pill: 100px;
   --max-w: 430px;
+}
+
+/* ── Velvet (pink/purple) ── */
+[data-theme="velvet"] {
+  --bg: #07050C;
+  --surface: #100D18;
+  --surface2: #1A1424;
+  --accent: #C96BB8;
+  --accent2: #7B4EC8;
+  --accent-glow: rgba(201,107,184,0.15);
+  --text: #F2EEF8;
+  --text-muted: rgba(242,238,248,0.45);
+  --text-ghost: rgba(242,238,248,0.15);
+  --border: rgba(201,107,184,0.18);
+  --grid-color: rgba(201,107,184,0.04);
+  --fog-color: rgba(123,78,200,0.06);
+}
+
+/* ── Noir (black & white) ── */
+[data-theme="noir"] {
+  --bg: #050505;
+  --surface: #111111;
+  --surface2: #1A1A1A;
+  --accent: #F0F0F0;
+  --accent2: #F0F0F0;
+  --accent-glow: rgba(240,240,240,0.08);
+  --text: #F0F0F0;
+  --text-muted: rgba(240,240,240,0.45);
+  --text-ghost: rgba(240,240,240,0.12);
+  --border: rgba(240,240,240,0.12);
+  --grid-color: rgba(240,240,240,0.03);
+  --fog-color: rgba(240,240,240,0.03);
 }
 
 /* ===================== RESET ===================== */
@@ -429,25 +464,25 @@ textarea.input-field {
   background:
     repeating-linear-gradient(
       90deg,
-      rgba(193,123,58,0.04) 0,
-      rgba(193,123,58,0.04) 1px,
+      var(--grid-color) 0,
+      var(--grid-color) 1px,
       transparent 1px,
       transparent 60px
     ),
     repeating-linear-gradient(
       0deg,
-      rgba(193,123,58,0.04) 0,
-      rgba(193,123,58,0.04) 1px,
+      var(--grid-color) 0,
+      var(--grid-color) 1px,
       transparent 1px,
       transparent 80px
     );
 }
 
-/* Amber fog */
+/* Map fog */
 .map-fog {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 45%, rgba(193,123,58,0.06) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 45%, var(--fog-color) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -605,7 +640,7 @@ textarea.input-field {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--surface2));
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1010,6 +1045,35 @@ textarea.input-field {
   font-size: 12px;
   color: var(--text-muted);
   padding: 8px 0;
+}
+
+/* ===================== THEME PICKER ===================== */
+.theme-picker {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 4px 0 8px;
+}
+.theme-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 200ms, transform 200ms;
+  position: relative;
+}
+.theme-swatch:hover { transform: scale(1.15); }
+.theme-swatch.active { border-color: var(--text); }
+.theme-swatch[data-t="amber"] { background: radial-gradient(circle at 35% 35%, #e6a050, #C17B3A); }
+.theme-swatch[data-t="velvet"] { background: radial-gradient(circle at 35% 35%, #D480C0, #7B4EC8); }
+.theme-swatch[data-t="noir"]   { background: radial-gradient(circle at 35% 35%, #f0f0f0, #888888); }
+.theme-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
 }
 
 /* ===================== REDUCED MOTION ===================== */
