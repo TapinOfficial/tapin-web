@@ -37,18 +37,50 @@
 
 /* ── Noir (black & white) ── */
 [data-theme="noir"] {
-  --bg: #050505;
-  --surface: #111111;
-  --surface2: #1A1A1A;
-  --accent: #F0F0F0;
-  --accent2: #F0F0F0;
-  --accent-glow: rgba(240,240,240,0.08);
-  --text: #F0F0F0;
-  --text-muted: rgba(240,240,240,0.45);
-  --text-ghost: rgba(240,240,240,0.12);
-  --border: rgba(240,240,240,0.12);
-  --grid-color: rgba(240,240,240,0.03);
-  --fog-color: rgba(240,240,240,0.03);
+  --bg: #030303;
+  --surface: #0D0D0D;
+  --surface2: #161616;
+  --accent: #EFEFEF;
+  --accent2: #EFEFEF;
+  --accent-glow: rgba(239,239,239,0.07);
+  --text: #EFEFEF;
+  --text-muted: rgba(239,239,239,0.42);
+  --text-ghost: rgba(239,239,239,0.10);
+  --border: rgba(239,239,239,0.10);
+  --grid-color: rgba(239,239,239,0.025);
+  --fog-color: rgba(239,239,239,0.025);
+}
+
+/* Noir-specific overrides */
+[data-theme="noir"] .btn-primary {
+  background: var(--text);
+  color: #000;
+  clip-path: none;
+  letter-spacing: 0.15em;
+}
+[data-theme="noir"] .btn-pill.selected {
+  background: var(--text);
+  color: #000;
+}
+[data-theme="noir"] .chat-bubble.you {
+  background: var(--text);
+  color: #000;
+}
+[data-theme="noir"] .chat-send {
+  background: var(--text);
+  color: #000;
+}
+[data-theme="noir"] .landing-wordmark {
+  font-size: 56px;
+  letter-spacing: -0.04em;
+}
+[data-theme="noir"] .topbar-wordmark {
+  letter-spacing: -0.03em;
+}
+[data-theme="noir"] .grain { opacity: 0.04; }
+[data-theme="noir"] .scanlines { opacity: 0.5; }
+[data-theme="noir"] .vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.75) 100%);
 }
 
 /* ===================== RESET ===================== */

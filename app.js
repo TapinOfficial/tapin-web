@@ -428,8 +428,8 @@
     s.addEventListener('click', () => applyTheme(s.dataset.t));
   });
 
-  // Restore saved theme
-  applyTheme(localStorage.getItem('tapin-theme') || 'amber');
+  // Restore saved theme — default noir
+  applyTheme(localStorage.getItem('tapin-theme') || 'noir');
 
   // ---- Init ----
   buildVibesGrid();
